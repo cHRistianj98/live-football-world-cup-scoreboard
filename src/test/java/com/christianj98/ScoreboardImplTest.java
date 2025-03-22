@@ -82,8 +82,12 @@ public class ScoreboardImplTest {
 
     @Test
     public void shouldThrowNoSuchElementExceptionWhenMatchNotStarted() {
+        // given
+        final var matchId = UUID.randomUUID();
+
         // when / then
-        assertThatThrownBy(() -> cut.updateScore(UUID.randomUUID(), 1, 1))
-                .isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(() -> cut.updateScore(matchId, 1, 1))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining(matchId.toString());
     }
 }
