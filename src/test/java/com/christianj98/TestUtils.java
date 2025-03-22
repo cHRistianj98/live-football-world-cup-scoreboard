@@ -38,4 +38,13 @@ public final class TestUtils {
                 Arguments.of(Integer.MAX_VALUE, 3)
         );
     }
+
+    public static Stream<Arguments> provideInvalidHomeTeamScoreOrAwayTeamScore() {
+        return Stream.of(
+                Arguments.of(-1, 0),
+                Arguments.of(3, -3),
+                Arguments.of(-3, -12),
+                Arguments.of(Integer.MIN_VALUE, 3)
+        );
+    }
 }

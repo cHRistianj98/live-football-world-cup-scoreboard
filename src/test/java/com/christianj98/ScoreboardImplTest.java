@@ -80,6 +80,23 @@ public class ScoreboardImplTest {
         return TestUtils.provideValidHomeTeamScoreAndAwayTeamScore();
     }
 
+    @ParameterizedTest
+    @MethodSource("provideInvalidHomeTeamScoreOrAwayTeamScore")
+    public void shouldThrowIllegalArgumentExceptionWhenScoresAreInvalid(int homeScore, int awayScore) {
+        // given
+        final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
+
+        // when / then
+        assertThatThrownBy(() -> cut.updateScore(footballMatchId, homeScore, awayScore))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Integer.toString(homeScore))
+                .hasMessageContaining(Integer.toString(awayScore));
+    }
+
+    private static Stream<Arguments> provideInvalidHomeTeamScoreOrAwayTeamScore() {
+        return TestUtils.provideInvalidHomeTeamScoreOrAwayTeamScore();
+    }
+
     @Test
     public void shouldThrowNoSuchElementExceptionWhenMatchNotStarted() {
         // given
