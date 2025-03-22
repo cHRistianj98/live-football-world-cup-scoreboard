@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/christianj98/live-football-world-cup-scoreboard/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/christianj98/live-football-world-cup-scoreboard/actions/workflows/ci.yml)
+[![Build Status](https://github.com/christianj98/live-football-world-cup-scoreboard/actions/workflows/ci.yml/badge.svg)](https://github.com/christianj98/live-football-world-cup-scoreboard/actions/workflows/ci.yml)
 
 # Live Football World Cup Scoreboard
 
