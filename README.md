@@ -19,7 +19,8 @@ A simple in-memory scoreboard library to track live football matches and their s
 - Java 17 or above
 
 ## Development notes
-
+- As I am the only one who implements, I will be pushing changes directly to the branch master.
+- For ease of development, I will use the humble CI at Github Actions.
 
 ## License
 No license required.
