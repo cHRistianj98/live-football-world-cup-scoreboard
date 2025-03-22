@@ -151,6 +151,5 @@ public class ScoreboardImplTest {
                     .isInstanceOf(NoSuchElementException.class)
                     .hasMessageContaining(footballMatchId.toString());
         }
-
     }
 }

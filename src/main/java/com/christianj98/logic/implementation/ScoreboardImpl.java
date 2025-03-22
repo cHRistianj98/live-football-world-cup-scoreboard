@@ -33,12 +33,15 @@ public class ScoreboardImpl implements Scoreboard {
     @Override
     public void updateScore(UUID matchId, int homeScore, int awayScore) {
         final FootballMatch footballMatch = Optional.ofNullable(getFootballMatch(matchId))
-                .orElseThrow(() -> new NoSuchElementException(String.format("Football match with id %s does not exist", matchId.toString())));
+                .orElseThrow(() -> new NoSuchElementException(String.format("Football match with id %s does not exist!", matchId.toString())));
         footballMatch.updateScore(homeScore, awayScore);
     }
 
     @Override
     public void finishFootballMatch(UUID matchId) {
+        if (!activeFootballMatches.containsKey(matchId)) {
+            throw new NoSuchElementException(String.format("Football match with id: %s does not exist!", matchId.toString()));
+        }
         activeFootballMatches.remove(matchId);
     }
 }
