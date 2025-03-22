@@ -39,6 +39,6 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public void finishFootballMatch(UUID matchId) {
-
+        activeFootballMatches.remove(matchId);
     }
 }
