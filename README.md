@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/christianj98/live-football-world-cup-scoreboard/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/christianj98/live-football-world-cup-scoreboard/actions/workflows/ci.yml)
+
 # Live Football World Cup Scoreboard
 
 A simple in-memory scoreboard library to track live football matches and their scores.
@@ -20,7 +22,7 @@ A simple in-memory scoreboard library to track live football matches and their s
 
 ## Development notes
 - As I am the only one who implements, I will be pushing changes directly to the branch master.
-- For ease of development, I will use the humble CI at Github Actions.
+- For ease of development, I will use the humble CI at GitHub Actions.
 
 ## License
 No license required.
