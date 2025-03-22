@@ -61,7 +61,7 @@ public class ScoreboardImplTest {
 
     @ParameterizedTest
     @MethodSource("provideValidHomeTeamScoreAndAwayTeamScore")
-    public void test(int homeScore, int awayScore) {
+    public void shouldUpdateScoreSuccessfully(int homeScore, int awayScore) {
         // given
         final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
 

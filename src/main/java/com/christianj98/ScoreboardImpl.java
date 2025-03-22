@@ -28,6 +28,8 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public void updateScore(UUID matchId, int homeScore, int awayScore) {
-        return;
+        final var footballMatch = getFootballMatch(matchId);
+        footballMatch.setHomeTeamScore(homeScore);
+        footballMatch.setAwayTeamScore(awayScore);
     }
 }
