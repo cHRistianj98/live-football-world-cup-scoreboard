@@ -2,9 +2,13 @@ package com.christianj98;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class ScoreboardImpl implements Scoreboard {
+
+    private final Map<UUID, FootballMatch> activeFootballMatches = new HashMap<>();
 
     @Override
     public UUID startFootballMatch(String homeTeam, String awayTeam) {
@@ -12,10 +16,12 @@ public class ScoreboardImpl implements Scoreboard {
             throw new IllegalArgumentException("Team names cannot be null or blank!");
         }
 
-        return null;
+        final var footballMatch = new FootballMatch(homeTeam, awayTeam);
+        activeFootballMatches.put(footballMatch.getMatchId(), footballMatch);
+        return footballMatch.getMatchId();
     }
 
     public FootballMatch getFootballMatch(UUID matchId) {
-        return null;
+        return activeFootballMatches.get(matchId);
     }
 }

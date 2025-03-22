@@ -26,6 +26,7 @@ A simple in-memory scoreboard library to track live football matches and their s
 - To minimise the amount of boilerplate code I decided to use the Lombok library.
 - Testing is planned mainly using the AssertJ and JUnit5 libraries.
 - I created an enum Country to simplify testing. In reality, club names would be taken, for example, from a database.
+- I assume that the code is single-threaded, I am not using multi-threaded collections, synchronisation mechanisms, etc.
 
 ## License
 No license required.
