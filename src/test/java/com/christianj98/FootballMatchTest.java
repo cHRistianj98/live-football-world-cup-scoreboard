@@ -29,6 +29,7 @@ public class FootballMatchTest {
 
         // then
         assertThat(footballMatch.getCreationDateTime()).isEqualTo(fixedDateTime);
+        assertThat(footballMatch.getMatchId()).isNotNull();
         assertThat(
                 tuple(footballMatch.getHomeTeamName(),
                         footballMatch.getAwayTeamName(),
