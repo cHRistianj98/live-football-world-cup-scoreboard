@@ -1,10 +1,12 @@
 package com.christianj98;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -76,5 +78,12 @@ public class ScoreboardImplTest {
 
     private static Stream<Arguments> provideValidHomeTeamScoreAndAwayTeamScore() {
         return TestUtils.provideValidHomeTeamScoreAndAwayTeamScore();
+    }
+
+    @Test
+    public void shouldThrowNoSuchElementExceptionWhenMatchNotStarted() {
+        // when / then
+        assertThatThrownBy(() -> cut.updateScore(UUID.randomUUID(), 1, 1))
+                .isInstanceOf(NoSuchElementException.class);
     }
 }
