@@ -26,13 +26,13 @@ public class ScoreboardImpl implements Scoreboard {
     }
 
     @Override
-    public FootballMatch getFootballMatch(UUID matchId) {
-        return activeFootballMatches.get(matchId);
+    public Optional<FootballMatch> getFootballMatch(UUID matchId) {
+        return Optional.ofNullable(activeFootballMatches.get(matchId));
     }
 
     @Override
     public void updateScore(UUID matchId, int homeScore, int awayScore) {
-        final FootballMatch footballMatch = Optional.ofNullable(getFootballMatch(matchId))
+        final FootballMatch footballMatch = getFootballMatch(matchId)
                 .orElseThrow(() -> new NoSuchElementException(getFootballMatchNotExistErrorMessage(matchId)));
         footballMatch.updateScore(homeScore, awayScore);
     }

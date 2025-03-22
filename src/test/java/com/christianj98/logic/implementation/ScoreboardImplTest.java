@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -39,15 +40,15 @@ public class ScoreboardImplTest {
 
             // when
             final UUID footballMatchId = cut.startFootballMatch(homeTeam, awayTeam);
-            final FootballMatch footballMatch = cut.getFootballMatch(footballMatchId);
+            final Optional<FootballMatch> footballMatch = cut.getFootballMatch(footballMatchId);
 
             // then
             assertThat(footballMatchId).isNotNull();
-            assertThat(footballMatch).isNotNull();
+            assertThat(footballMatch).isNotEmpty();
             assertThat(
                     tuple(
-                            footballMatch.getHomeTeamName(),
-                            footballMatch.getAwayTeamName())
+                            footballMatch.get().getHomeTeamName(),
+                            footballMatch.get().getAwayTeamName())
             ).isEqualTo(
                     tuple(
                             homeTeam,
@@ -86,8 +87,9 @@ public class ScoreboardImplTest {
             cut.updateScore(footballMatchId, homeScore, awayScore);
 
             // then
-            final var footballMatch = cut.getFootballMatch(footballMatchId);
-            assertThat(tuple(footballMatch.getHomeTeamScore(), footballMatch.getAwayTeamScore()))
+            final Optional<FootballMatch> footballMatch = cut.getFootballMatch(footballMatchId);
+            assertThat(footballMatch).isNotEmpty();
+            assertThat(tuple(footballMatch.get().getHomeTeamScore(), footballMatch.get().getAwayTeamScore()))
                     .isEqualTo(tuple(homeScore, awayScore));
         }
 
@@ -137,8 +139,8 @@ public class ScoreboardImplTest {
             cut.finishFootballMatch(footballMatchId);
 
             // then
-            final FootballMatch footballMatch = cut.getFootballMatch(footballMatchId);
-            assertThat(footballMatch).isNull();
+            final Optional<FootballMatch> footballMatch = cut.getFootballMatch(footballMatchId);
+            assertThat(footballMatch).isEmpty();
         }
 
         @Test
