@@ -141,5 +141,16 @@ public class ScoreboardImplTest {
             assertThat(footballMatch).isNull();
         }
 
+        @Test
+        public void shouldThrowNoSuchElementExceptionWhenMatchHasNotBeenStarted() {
+            // given
+            final var footballMatchId = UUID.randomUUID();
+
+            // when / then
+            assertThatThrownBy(() -> cut.finishFootballMatch(footballMatchId))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessageContaining(footballMatchId.toString());
+        }
+
     }
 }
