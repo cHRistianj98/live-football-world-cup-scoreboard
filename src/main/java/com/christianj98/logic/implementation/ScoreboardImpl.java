@@ -5,6 +5,7 @@ import com.christianj98.logic.Scoreboard;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -43,6 +44,11 @@ public class ScoreboardImpl implements Scoreboard {
             throw new NoSuchElementException(getFootballMatchNotExistErrorMessage(matchId));
         }
         activeFootballMatches.remove(matchId);
+    }
+
+    @Override
+    public List<FootballMatch> getSummary() {
+        return List.of();
     }
 
     private String getFootballMatchNotExistErrorMessage(UUID matchId) {

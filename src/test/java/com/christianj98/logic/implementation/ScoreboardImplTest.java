@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -153,5 +154,40 @@ public class ScoreboardImplTest {
                     .isInstanceOf(NoSuchElementException.class)
                     .hasMessageContaining(footballMatchId.toString());
         }
+    }
+
+    @Nested
+    @DisplayName("getSummary()")
+    class GetSummaryMethodTests {
+
+        @Test
+        public void shouldGetSummaryOfMatchesInProgressOrderedByTheirScore() {
+            // given
+            final UUID matchMexicoVsCanadaId = startMatchAndUpdateScore(Country.MEXICO.getName(), Country.CANADA.getName(), 0, 5);
+            final UUID matchSpainVsBrazilId = startMatchAndUpdateScore(Country.SPAIN.getName(), Country.BRAZIL.getName(), 10, 2);
+            final UUID matchGermanyVsFranceId = startMatchAndUpdateScore(Country.GERMANY.getName(), Country.FRANCE.getName(), 2, 2);
+            final UUID matchUruguayVsItalyId = startMatchAndUpdateScore(Country.URUGUAY.getName(), Country.ITALY.getName(), 6, 6);
+            final UUID matchArgentinaVsAustraliaId = startMatchAndUpdateScore(Country.ARGENTINA.getName(), Country.AUSTRALIA.getName(), 3, 1);
+
+            // when
+            final List<FootballMatch> summary = cut.getSummary();
+
+            // then
+            assertThat(summary)
+                    .extracting(FootballMatch::getMatchId)
+                    .containsExactly(
+                            matchUruguayVsItalyId,
+                            matchSpainVsBrazilId,
+                            matchMexicoVsCanadaId,
+                            matchArgentinaVsAustraliaId,
+                            matchGermanyVsFranceId
+                    );
+        }
+    }
+
+    private UUID startMatchAndUpdateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
+        final UUID matchId = cut.startFootballMatch(homeTeam, awayTeam);
+        cut.updateScore(matchId, homeScore, awayScore);
+        return matchId;
     }
 }
