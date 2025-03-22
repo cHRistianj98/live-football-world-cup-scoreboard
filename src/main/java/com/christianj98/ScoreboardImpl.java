@@ -32,8 +32,6 @@ public class ScoreboardImpl implements Scoreboard {
     public void updateScore(UUID matchId, int homeScore, int awayScore) {
         final FootballMatch footballMatch = Optional.ofNullable(getFootballMatch(matchId))
                 .orElseThrow(() -> new NoSuchElementException(String.format("Football match with id %s does not exist", matchId.toString())));
-
-        footballMatch.setHomeTeamScore(homeScore);
-        footballMatch.setAwayTeamScore(awayScore);
+        footballMatch.updateScore(homeScore, awayScore);
     }
 }

@@ -1,7 +1,6 @@
 package com.christianj98;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -16,9 +15,7 @@ public final class FootballMatch {
     private final String awayTeamName;
     private final UUID matchId;
     private final LocalDateTime creationDateTime;
-    @Setter
     private int homeTeamScore;
-    @Setter
     private int awayTeamScore;
 
     public FootballMatch(String homeTeamName, String awayTeamName, Clock clock) {
@@ -32,5 +29,14 @@ public final class FootballMatch {
 
     public FootballMatch(String homeTeamName, String awayTeamName) {
         this(homeTeamName, awayTeamName, Clock.systemDefaultZone());
+    }
+
+    public void updateScore(int homeTeamScore, int awayTeamScore) {
+        if (homeTeamScore < 0 || awayTeamScore < 0) {
+            throw new IllegalArgumentException(
+                    String.format("Team score cannot be negative. One of the following values is negative: %d %d", homeTeamScore, awayTeamScore));
+        }
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
     }
 }
