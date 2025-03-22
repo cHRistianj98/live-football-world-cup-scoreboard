@@ -123,4 +123,23 @@ public class ScoreboardImplTest {
                     .hasMessageContaining(matchId.toString());
         }
     }
+
+    @Nested
+    @DisplayName("finishFootballMatch(UUID matchId)")
+    class FinishFootballMatchMethodTests {
+
+        @Test
+        public void shouldFinishFootballMatchSuccessfully() {
+            // given
+            final UUID footballMatchId = cut.startFootballMatch(Country.ARGENTINA.getName(), Country.BRAZIL.getName());
+
+            // when
+            cut.finishFootballMatch(footballMatchId);
+
+            // then
+            final FootballMatch footballMatch = cut.getFootballMatch(footballMatchId);
+            assertThat(footballMatch).isNull();
+        }
+
+    }
 }

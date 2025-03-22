@@ -36,4 +36,9 @@ public class ScoreboardImpl implements Scoreboard {
                 .orElseThrow(() -> new NoSuchElementException(String.format("Football match with id %s does not exist", matchId.toString())));
         footballMatch.updateScore(homeScore, awayScore);
     }
+
+    @Override
+    public void finishFootballMatch(UUID matchId) {
+
+    }
 }

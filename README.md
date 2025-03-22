@@ -28,6 +28,7 @@ A simple in-memory scoreboard library to track live football matches and their s
 - I created an enum Country to simplify testing. In reality, club names would be taken, for example, from a database.
 - I assume that the code is single-threaded, I am not using multi-threaded collections, synchronisation mechanisms, etc.
 - I could have done a spy to the getFootballMatch method but I didn't want to because the implementation with the map is simple enough to test the functionality without unnecessary mocks.
+- I chose UUID as the football match id so that I could freely generate a new id using a static class. I could also use int, but then I would have to create some kind of unique number generator.
 
 ## License
 No license required.
