@@ -17,8 +17,40 @@ A simple in-memory scoreboard library to track live football matches and their s
   same total score will be returned ordered by the most recently started match in the
   scoreboard.
 
-## Prerequisites
-- Java 17 or above
+## Installation & Requirements
+- Java 17 or higher is recommended
+
+### Installation steps:
+- Clone or download this repository
+- Open it in your favorite IDE or build via Maven
+- Make sure you have Java 17 installed
+- (Optional) Run the tests (mvn test or similar) to verify everything works
+
+## Key Features
+
+- Start a new football match 
+  `UUID startFootballMatch(String homeTeam, String awayTeam)`  
+  Creates a new match with a unique ID, storing home/away team names and initial score 0–0.
+
+- Update score
+  `void updateScore(UUID matchId, int homeScore, int awayScore)`  
+  Updates the score of the specified match. Throws an exception if the match id does not exist.
+
+- Finish a football match
+  `void finishFootballMatch(UUID matchId)`  
+  Ends the match and removes it from the scoreboard. Throws an exception if the match id does not exist.
+
+- Get summary
+  `List<FootballMatch> getSummary()`  
+  Returns a list of active matches, sorted so that:
+  - Football matches with higher combined scores appear first.
+  - Among matches with the same total score, the most recently started one appears higher in the list.
+
+## How It Works
+- Uses a data structure (e.g. a `Map<UUID, Match>`) to store ongoing matches.
+- Each football match is identified by an UUID `matchId`.
+- Scores can be updated or finished at any time using the `matchId`.
+- Once a match is finished, it is removed from the scoreboard and no longer appears in the summary.
 
 ## Development notes
 - As I am the only one who implements, I will be pushing changes directly to the branch master.
