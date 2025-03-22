@@ -1,4 +1,4 @@
-package com.christianj98;
+package com.christianj98.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

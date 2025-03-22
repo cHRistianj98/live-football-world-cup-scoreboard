@@ -1,4 +1,6 @@
-package com.christianj98;
+package com.christianj98.logic;
+
+import com.christianj98.data.FootballMatch;
 
 import java.util.UUID;
 

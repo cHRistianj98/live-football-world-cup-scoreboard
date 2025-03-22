@@ -1,5 +1,9 @@
-package com.christianj98;
+package com.christianj98.logic.implementation;
 
+import com.christianj98.utils.TestUtils;
+import com.christianj98.data.FootballMatch;
+import com.christianj98.enumeration.Country;
+import com.christianj98.logic.Scoreboard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,5 +1,6 @@
-package com.christianj98;
+package com.christianj98.data;
 
+import com.christianj98.utils.TestUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

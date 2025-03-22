@@ -1,4 +1,4 @@
-package com.christianj98;
+package com.christianj98.data;
 
 import lombok.Getter;
 

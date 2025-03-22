@@ -1,5 +1,6 @@
-package com.christianj98;
+package com.christianj98.utils;
 
+import com.christianj98.enumeration.Country;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.provider.Arguments;
 

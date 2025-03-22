@@ -1,5 +1,7 @@
-package com.christianj98;
+package com.christianj98.logic.implementation;
 
+import com.christianj98.data.FootballMatch;
+import com.christianj98.logic.Scoreboard;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
