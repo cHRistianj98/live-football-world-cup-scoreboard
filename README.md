@@ -23,6 +23,8 @@ A simple in-memory scoreboard library to track live football matches and their s
 ## Development notes
 - As I am the only one who implements, I will be pushing changes directly to the branch master.
 - For ease of development, I will use the humble CI at GitHub Actions.
+- To minimise the amount of boilerplate code I decided to use the Lombok library.
+- Testing is planned mainly using the AssertJ and Junit5 libraries.
 
 ## License
 No license required.
