@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ScoreboardImpl implements Scoreboard {
@@ -29,10 +30,8 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public void updateScore(UUID matchId, int homeScore, int awayScore) {
-        final var footballMatch = getFootballMatch(matchId);
-        if (footballMatch == null) {
-            throw new NoSuchElementException(String.format("Football match with id %s does not exist",  matchId.toString()));
-        }
+        final FootballMatch footballMatch = Optional.ofNullable(getFootballMatch(matchId))
+                .orElseThrow(() -> new NoSuchElementException(String.format("Football match with id %s does not exist", matchId.toString())));
 
         footballMatch.setHomeTeamScore(homeScore);
         footballMatch.setAwayTeamScore(awayScore);
