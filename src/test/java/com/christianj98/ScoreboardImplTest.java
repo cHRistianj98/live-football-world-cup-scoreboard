@@ -1,6 +1,8 @@
 package com.christianj98;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,88 +25,98 @@ public class ScoreboardImplTest {
         cut = new ScoreboardImpl();
     }
 
-    @ParameterizedTest
-    @MethodSource("provideValidHomeTeamAndAwayTeam")
-    public void shouldStartFootballMatch(String homeTeam, String awayTeam) {
+    @Nested
+    @DisplayName("startFootballMatch(String homeTeam, String awayTeam)")
+    class StartFootballMatchMethodTests {
 
-        // when
-        final UUID footballMatchId = cut.startFootballMatch(homeTeam, awayTeam);
-        final FootballMatch footballMatch = cut.getFootballMatch(footballMatchId);
+        @ParameterizedTest
+        @MethodSource("provideValidHomeTeamAndAwayTeam")
+        public void shouldStartFootballMatch(String homeTeam, String awayTeam) {
 
-        // then
-        assertThat(footballMatchId).isNotNull();
-        assertThat(footballMatch).isNotNull();
-        assertThat(
-                tuple(
-                        footballMatch.getHomeTeamName(),
-                        footballMatch.getAwayTeamName())
-        ).isEqualTo(
-                tuple(
-                        homeTeam,
-                        awayTeam
-                ));
+            // when
+            final UUID footballMatchId = cut.startFootballMatch(homeTeam, awayTeam);
+            final FootballMatch footballMatch = cut.getFootballMatch(footballMatchId);
+
+            // then
+            assertThat(footballMatchId).isNotNull();
+            assertThat(footballMatch).isNotNull();
+            assertThat(
+                    tuple(
+                            footballMatch.getHomeTeamName(),
+                            footballMatch.getAwayTeamName())
+            ).isEqualTo(
+                    tuple(
+                            homeTeam,
+                            awayTeam
+                    ));
+        }
+
+        private static Stream<Arguments> provideValidHomeTeamAndAwayTeam() {
+            return TestUtils.provideValidHomeTeamAndAwayTeam();
+        }
+
+        @ParameterizedTest
+        @MethodSource("provideInvalidHomeTeamOrAwayTeam")
+        public void shouldThrowExceptionFoInvalidArguments(String homeTeam, String awayTeam) {
+            // when / then
+            assertThatThrownBy(() -> cut.startFootballMatch(homeTeam, awayTeam))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        private static Stream<Arguments> provideInvalidHomeTeamOrAwayTeam() {
+            return TestUtils.provideInvalidHomeTeamOrAwayTeam();
+        }
     }
 
-    private static Stream<Arguments> provideValidHomeTeamAndAwayTeam() {
-        return TestUtils.provideValidHomeTeamAndAwayTeam();
-    }
+    @Nested
+    @DisplayName("updateScore(UUID matchId, int homeScore, int awayScore)")
+    class UpdateScoreMethodTests {
 
-    @ParameterizedTest
-    @MethodSource("provideInvalidHomeTeamOrAwayTeam")
-    public void shouldThrowExceptionFoInvalidArguments(String homeTeam, String awayTeam) {
-        // when / then
-        assertThatThrownBy(() -> cut.startFootballMatch(homeTeam, awayTeam))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
+        @ParameterizedTest
+        @MethodSource("provideValidHomeTeamScoreAndAwayTeamScore")
+        public void shouldUpdateScoreSuccessfully(int homeScore, int awayScore) {
+            // given
+            final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
 
-    private static Stream<Arguments> provideInvalidHomeTeamOrAwayTeam() {
-        return TestUtils.provideInvalidHomeTeamOrAwayTeam();
-    }
+            // when
+            cut.updateScore(footballMatchId, homeScore, awayScore);
 
-    @ParameterizedTest
-    @MethodSource("provideValidHomeTeamScoreAndAwayTeamScore")
-    public void shouldUpdateScoreSuccessfully(int homeScore, int awayScore) {
-        // given
-        final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
+            // then
+            final var footballMatch = cut.getFootballMatch(footballMatchId);
+            assertThat(tuple(footballMatch.getHomeTeamScore(), footballMatch.getAwayTeamScore()))
+                    .isEqualTo(tuple(homeScore, awayScore));
+        }
 
-        // when
-        cut.updateScore(footballMatchId, homeScore, awayScore);
+        private static Stream<Arguments> provideValidHomeTeamScoreAndAwayTeamScore() {
+            return TestUtils.provideValidHomeTeamScoreAndAwayTeamScore();
+        }
 
-        // then
-        final var footballMatch = cut.getFootballMatch(footballMatchId);
-        assertThat(tuple(footballMatch.getHomeTeamScore(), footballMatch.getAwayTeamScore()))
-                .isEqualTo(tuple(homeScore, awayScore));
-    }
+        @ParameterizedTest
+        @MethodSource("provideInvalidHomeTeamScoreOrAwayTeamScore")
+        public void shouldThrowIllegalArgumentExceptionWhenScoresAreInvalid(int homeScore, int awayScore) {
+            // given
+            final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
 
-    private static Stream<Arguments> provideValidHomeTeamScoreAndAwayTeamScore() {
-        return TestUtils.provideValidHomeTeamScoreAndAwayTeamScore();
-    }
+            // when / then
+            assertThatThrownBy(() -> cut.updateScore(footballMatchId, homeScore, awayScore))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining(Integer.toString(homeScore))
+                    .hasMessageContaining(Integer.toString(awayScore));
+        }
 
-    @ParameterizedTest
-    @MethodSource("provideInvalidHomeTeamScoreOrAwayTeamScore")
-    public void shouldThrowIllegalArgumentExceptionWhenScoresAreInvalid(int homeScore, int awayScore) {
-        // given
-        final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
+        private static Stream<Arguments> provideInvalidHomeTeamScoreOrAwayTeamScore() {
+            return TestUtils.provideInvalidHomeTeamScoreOrAwayTeamScore();
+        }
 
-        // when / then
-        assertThatThrownBy(() -> cut.updateScore(footballMatchId, homeScore, awayScore))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(Integer.toString(homeScore))
-                .hasMessageContaining(Integer.toString(awayScore));
-    }
+        @Test
+        public void shouldThrowNoSuchElementExceptionWhenMatchNotStarted() {
+            // given
+            final var matchId = UUID.randomUUID();
 
-    private static Stream<Arguments> provideInvalidHomeTeamScoreOrAwayTeamScore() {
-        return TestUtils.provideInvalidHomeTeamScoreOrAwayTeamScore();
-    }
-
-    @Test
-    public void shouldThrowNoSuchElementExceptionWhenMatchNotStarted() {
-        // given
-        final var matchId = UUID.randomUUID();
-
-        // when / then
-        assertThatThrownBy(() -> cut.updateScore(matchId, 1, 1))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessageContaining(matchId.toString());
+            // when / then
+            assertThatThrownBy(() -> cut.updateScore(matchId, 1, 1))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessageContaining(matchId.toString());
+        }
     }
 }
