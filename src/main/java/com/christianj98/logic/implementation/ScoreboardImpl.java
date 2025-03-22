@@ -48,7 +48,10 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public List<FootballMatch> getSummary() {
-        return List.of();
+        return activeFootballMatches.values()
+                .stream()
+                .sorted() // implements Comparable
+                .toList();
     }
 
     private String getFootballMatchNotExistErrorMessage(UUID matchId) {

@@ -4,10 +4,11 @@ import lombok.Getter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.UUID;
 
 @Getter
-public final class FootballMatch {
+public final class FootballMatch implements Comparable<FootballMatch> {
 
     private static final int INITIAL_SCORE = 0;
 
@@ -38,5 +39,17 @@ public final class FootballMatch {
         }
         this.homeTeamScore = homeTeamScore;
         this.awayTeamScore = awayTeamScore;
+    }
+
+    @Override
+    public int compareTo(FootballMatch other) {
+        return Comparator.comparingInt(FootballMatch::getTotalScore)
+                .reversed()
+                .thenComparing(FootballMatch::getCreationDateTime, Comparator.reverseOrder())
+                .compare(this, other);
+    }
+
+    private int getTotalScore() {
+        return this.homeTeamScore + this.awayTeamScore;
     }
 }
