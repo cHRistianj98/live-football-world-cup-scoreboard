@@ -46,12 +46,6 @@ public class FootballMatchTest {
 
 
     private static Stream<Arguments> provideHomeTeamAndAwayTeam() {
-        return Stream.of(
-                Arguments.of(Country.MEXICO.getName(), Country.CANADA.getName()),
-                Arguments.of(Country.SPAIN.getName(), Country.BRAZIL.getName()),
-                Arguments.of(Country.GERMANY.getName(), Country.FRANCE.getName()),
-                Arguments.of(Country.URUGUAY.getName(), Country.ITALY.getName()),
-                Arguments.of(Country.ARGENTINA.getName(), Country.AUSTRALIA.getName())
-        );
+        return TestUtils.provideValidHomeTeamAndAwayTeam();
     }
 }
