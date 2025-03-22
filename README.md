@@ -27,6 +27,7 @@ A simple in-memory scoreboard library to track live football matches and their s
 - Testing is planned mainly using the AssertJ and JUnit5 libraries.
 - I created an enum Country to simplify testing. In reality, club names would be taken, for example, from a database.
 - I assume that the code is single-threaded, I am not using multi-threaded collections, synchronisation mechanisms, etc.
+- I could have done a spy to the getFootballMatch method but I didn't want to because the implementation with the map is simple enough to test the functionality without unnecessary mocks.
 
 ## License
 No license required.

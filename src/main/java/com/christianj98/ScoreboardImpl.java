@@ -21,7 +21,13 @@ public class ScoreboardImpl implements Scoreboard {
         return footballMatch.getMatchId();
     }
 
+    @Override
     public FootballMatch getFootballMatch(UUID matchId) {
         return activeFootballMatches.get(matchId);
+    }
+
+    @Override
+    public void updateScore(UUID matchId, int homeScore, int awayScore) {
+        return;
     }
 }

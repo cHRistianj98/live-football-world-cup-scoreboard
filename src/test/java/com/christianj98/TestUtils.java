@@ -29,4 +29,13 @@ public final class TestUtils {
                 Arguments.of(null, null)
         );
     }
+
+    public static Stream<Arguments> provideValidHomeTeamScoreAndAwayTeamScore() {
+        return Stream.of(
+                Arguments.of(1, 0),
+                Arguments.of(0, 0),
+                Arguments.of(2137, 3),
+                Arguments.of(Integer.MAX_VALUE, 3)
+        );
+    }
 }

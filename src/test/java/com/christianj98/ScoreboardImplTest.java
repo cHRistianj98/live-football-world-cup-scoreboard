@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 public class ScoreboardImplTest {
 
-    private ScoreboardImpl cut;
+    private Scoreboard cut;
 
     @BeforeEach
     public void init() {
@@ -57,5 +57,24 @@ public class ScoreboardImplTest {
 
     private static Stream<Arguments> provideInvalidHomeTeamOrAwayTeam() {
         return TestUtils.provideInvalidHomeTeamOrAwayTeam();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideValidHomeTeamScoreAndAwayTeamScore")
+    public void test(int homeScore, int awayScore) {
+        // given
+        final UUID footballMatchId = cut.startFootballMatch(Country.URUGUAY.getName(), Country.FRANCE.getName());
+
+        // when
+        cut.updateScore(footballMatchId, homeScore, awayScore);
+
+        // then
+        final var footballMatch = cut.getFootballMatch(footballMatchId);
+        assertThat(tuple(footballMatch.getHomeTeamScore(), footballMatch.getAwayTeamScore()))
+                .isEqualTo(tuple(homeScore, awayScore));
+    }
+
+    private static Stream<Arguments> provideValidHomeTeamScoreAndAwayTeamScore() {
+        return TestUtils.provideValidHomeTeamScoreAndAwayTeamScore();
     }
 }
