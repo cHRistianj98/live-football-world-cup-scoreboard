@@ -1,9 +1,11 @@
 package com.christianj98.logic.implementation;
 
+import com.christianj98.exception.TeamNotFoundException;
 import com.christianj98.utils.TestUtils;
 import com.christianj98.data.FootballMatch;
 import com.christianj98.enumeration.Country;
 import com.christianj98.logic.Scoreboard;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -182,6 +186,61 @@ public class ScoreboardImplTest {
                             matchArgentinaVsAustraliaId,
                             matchGermanyVsFranceId
                     );
+        }
+    }
+
+    @Nested
+    @DisplayName("getScore()")
+    class GetScoreTests {
+
+        @Test
+        public void shouldGetHomeScore() {
+            // given
+            String teamName = Country.ARGENTINA.getName();
+            final UUID matchId = cut.startFootballMatch(teamName, Country.BRAZIL.getName());
+            cut.updateScore(matchId, 1, 0);
+            final int expectedScore = cut.getFootballMatch(matchId).get().getHomeTeamScore();
+
+            // when
+            final int result = cut.getScore(teamName);
+
+            // then
+            assertThat(result).isEqualTo(expectedScore);
+        }
+
+        @Test
+        public void shouldGetAwayScore() {
+            // given
+            final String homeTeamName = Country.ARGENTINA.getName();
+            final String awayTeamName = Country.BRAZIL.getName();
+            final int expectedScore = 10;
+            final UUID matchId = cut.startFootballMatch(homeTeamName, awayTeamName);
+            cut.updateScore(matchId, 1, expectedScore);
+
+            // when
+            final int result = cut.getScore(awayTeamName);
+
+            // then
+            assertThat(result).isEqualTo(expectedScore);
+        }
+
+        @Test
+        public void shouldFail() {
+            // given
+            final String teamName = Country.URUGUAY.getName();
+
+            // when / then
+            assertThatThrownBy(() -> cut.getScore(teamName))
+                    .isInstanceOf(TeamNotFoundException.class);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {StringUtils.EMPTY, StringUtils.SPACE})
+        @NullSource
+        public void shouldHandleAllInvalidTeamNames(String teamName) {
+            // when / then
+            assertThatThrownBy(() -> cut.getScore(teamName))
+                    .isInstanceOf(TeamNotFoundException.class);
         }
     }
 

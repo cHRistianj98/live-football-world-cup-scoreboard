@@ -1,6 +1,7 @@
 package com.christianj98.logic.implementation;
 
 import com.christianj98.data.FootballMatch;
+import com.christianj98.exception.TeamNotFoundException;
 import com.christianj98.logic.Scoreboard;
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,6 +53,20 @@ public class ScoreboardImpl implements Scoreboard {
                 .stream()
                 .sorted() // implements Comparable
                 .toList();
+    }
+
+    @Override
+    public int getScore(String teamName) {
+        return activeFootballMatches
+                .values()
+                .stream()
+                .filter(match -> match.getAwayTeamName().equals(teamName) || match.getHomeTeamName().equals(teamName))
+                .findAny()
+                .map(match -> match.getHomeTeamName().equals(teamName)
+                        ? match.getHomeTeamScore()
+                        : match.getAwayTeamScore()
+                )
+                .orElseThrow(TeamNotFoundException::new);
     }
 
     private String getFootballMatchNotExistErrorMessage(UUID matchId) {

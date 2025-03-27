@@ -12,4 +12,5 @@ public interface Scoreboard {
     void updateScore(UUID matchId, int homeScore, int awayScore);
     void finishFootballMatch(UUID matchId);
     List<FootballMatch> getSummary();
+    int getScore(String teamName);
 }
